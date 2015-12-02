@@ -10,7 +10,9 @@ Please use the github page for all feature sugesstions, comments and bug reporti
 -Master code to run all algorithms
 -Code to generate REM statistics
 Algorithms:
--Yetton Et Al's Machine Learning algorithm (```YettonEtAl_MachineLearning```)
+-Yetton Et Al's Machine Learning algorithm (```
+YettonEtAl_MachineLearning
+```)
 -Yetton Et Al's Best Single Feature (```YettonEtAl_SingleFeature```)
 -Yetton Et Al's Threshold algorithm (```YettonEtAl_Threshhold```)
 The following methods from previous liturature were implmented.
