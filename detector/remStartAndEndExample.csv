@@ -1,0 +1,7 @@
+Name,REMperiod,StartREMepoch,EndREMepoch,StartREM,EndREM
+File1,1,58,74,445440,568320
+File1,2,76,83,583680,637440
+File1,3,155,186,1190400,1428480
+File2,1,45,47,345600,360960
+File2,2,49,56,376320,430080
+^ this is the filename without extention,^This is the period of REM within the same file,^this is the start of REM in epochs and is not currently used,^this is the end of REM in epochs and is not currently used,^this is the start of REM in samples (i.e. sample rate * epoch * epoch length in seconds ),^this is the start of REM in samples (i.e. sample rate * (epoch +1) * epoch length in seconds -1)
