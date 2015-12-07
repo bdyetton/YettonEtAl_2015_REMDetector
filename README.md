@@ -8,7 +8,7 @@ Please use the GitHub page for all feature suggestions, comments and bug reporti
 
 ## Contents
 * Code to run algorithms
-* Code to generate REM statistics
+* Code to generate REM statistics (Coming soon!)
 
 #### Algorithms:
 Yetton Et Al:  
