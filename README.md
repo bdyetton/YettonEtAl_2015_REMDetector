@@ -28,7 +28,7 @@ The following methods from previous liturature were implmented:
 
 1. Download this file through Git or use the download as zip button (on GitHub), or OSF files panel (on OSF)
 2. Open MATLAB and navigate to the unzipped detector folder
-3. Change settings such as sample rate if you need to at the top of importAndParseData.m (default 256Hz)
+3. Your EEG data must be in edf format, and sampled at 256Hz. Plans are to generalize the detector to other sample rates, but for now, please downsample if need be.
 4. To run all detector (except the McPartland detector) enter 'runDetector' in the command line.
 If you would like to run each detector individually, then enter a cell array of detector names (see detector names above) e.g. to run Yetton et al's Machine Learning and Thresholding algorithms:
 ```matlab 
