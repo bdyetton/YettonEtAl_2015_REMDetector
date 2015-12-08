@@ -12,7 +12,7 @@ function [locOut,levelsOut] = clusterLocs(locs,levels,peaks,type,thresh)
     for i = 1:max(clusterGroups)
         clusteredLocs{i} = locs(clusterGroups==i);
         clusteredLevels{i} = levels(clusterGroups==i);
-        if type ==0
+        if type ==0 %use the max peak for output location
             clusteredPeaks{i} = peaks(clusterGroups==i);
             [~,peakLoc] = max(clusteredPeaks{i});
             locOut(i) = clusteredLocs{i}(peakLoc);
