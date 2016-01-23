@@ -1,19 +1,20 @@
 function runDetector(detectors2Run)
-%% detectors2Run should be a list of 
+%% detectors2Run should be a subset of the following strings:
 if ~exist('detectors2Run','var')
     detectors2Run = {
         'YettonEtAl_MachineLearning',...
         'SmithEtAl',...
         'AgarwalEtAl',...
         'MinardEtAl',...
-        'DomanEtAl',...
         'YettonEtAl_SingleFeature',...
         'HatzilabrouEtAl',...
-        'YettonEtAl_Thresholding'        
+        'YettonEtAl_Threshold'        
         };
 end
 disp('Converting EDF to mat files')
 [edfs,outputLocation] = edf2matMultiSelect();
+edfs = edfs(~cellfun(@isempty, edfs));
+outputFileName = [outputLocation 'remDetectorOutput' datestr(now, 'dd-mmm-yyyy-hhMM')];
 [fileName,filePath]=uigetfile('*.csv','Select Rem start and End .csv file','MultiSelect', 'off');
 startAndEnd = true;
 if ~fileName
@@ -21,12 +22,13 @@ if ~fileName
 else
     remStartAndEnd = readtable([filePath fileName]);
 end
-lables = cell(length(detectors2Run),length(edfs));
+labels = cell(length(detectors2Run),length(edfs));
 locs = cell(length(detectors2Run),length(edfs));
 i = 1;
 for i_edf=1:length(edfs)
     fprintf('Parsing file data ')
     [~,name,~] = fileparts(edfs{i_edf});
+    name = [name '.edf'];
     fprintf('\n\n----------Working on %s (file %i of %i)-----------\n',name,i_edf,length(edfs))
     startTimes = [0];
     endTimes = [0];
@@ -57,19 +59,19 @@ for i_edf=1:length(edfs)
                 featureData = extractFeatures(parsedData);
                 disp('         YettonEtAl_MachineLearning 2 of 2: Classifing data')
                 classifiedData = classifyREM(featureData);
-                lables{currentDetector,i} = classifiedData;
+                labels{currentDetector,i} = classifiedData;
             else
                 detector = str2func(detectors2Run{currentDetector});
                 locs{currentDetector,i} = detector(parsedData.rawTimeData);
-                lables{currentDetector,i} = windowize(locs{currentDetector,i},parsedData.winIndexData); 
+                labels{currentDetector,i} = windowize(locs{currentDetector,i},parsedData.winIndexData); 
             end      
-            rem.density(i,currentDetector) = remDensity(lables{currentDetector,i}); 
+            rem.density(i,currentDetector) = remDensity(labels{currentDetector,i}); 
         end
         i = i+1;
     end
+    remTable = struct2table(rem);
+    %remTable.Properties.VariableNames = ['fileName' detectors2Run'];
+    save([outputFileName '.mat'],'remTable','labels');
+    writetable(remTable,[outputFileName '.csv']);
 end
-remTable = struct2table(rem);
-remTable.Properties.VariableNames = ['fileName' detectors2Run];
-save([outputLocation '/remDetectorOutput' datestr(now, 'dd-mmm-yyyy') '.mat'],'remTable','lables');
-writetable(remTable,[outputLocation '/remDetectorOutput' datestr(now, 'dd-mmm-yyyy') '.csv']);
 end
