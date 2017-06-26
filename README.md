@@ -1,5 +1,5 @@
-#Automatic REM detector
-###v0.1
+# Automatic REM detector
+### v0.1
 This repository contains the MATLAB code for the Automatic REM Detector (For LOC and ROC) developed by Yetton et al.
 DOI: 10.1016/j.jneumeth.2015.11.015
  
@@ -23,8 +23,8 @@ The following methods from previous liturature were implmented:
 * Smith Et Al (```SmithEtAl```)
 * Doman Et Al (```DomanEtAl```)
  
-##User Guide
-###Running the Detector
+## User Guide
+### Running the Detector
  
 1. Download this file through Git or use the download as zip button (on GitHub), or OSF files panel (on OSF)
 2. Open MATLAB and navigate to the unzipped detector folder
@@ -39,7 +39,7 @@ runDetector({'YettonEtAl_MachineLearning','YettonEtAl_Thresholding'})
 6. A second dialog will appear and ask for a .csv file containing the time (in samples) of the start and end of REM sleep (See REM start and end file below for format). If no file is selected, all the record will be assumed to be REM sleep.
 7. Sit back and relax, and the detector starts detecting REM's. Depending on your computer spec's this may take a long time. It’s best to leave the detectors to run overnight. See the output file below for information on the format of data returned.   
  
-###REM start and end file
+### REM start and end file
 Usually the edf file will contain other stage data. This detector was not developed to handle other stages, and will not work on epochs containing NREM sleep. You may defined the 'periods' of REM sleep in each EDF file by adding the start and end (in samples) of each REM detector period. There may be multiple periods in a single .edf record. These will be output separately. Notice in the example .csv file below that the first file "FileOne.edf" has 3 REM periods, and the second file "FileTwo.edf" has only one
  
 | Name                      | REMperiod | StartREM | EndREM  |
@@ -57,14 +57,14 @@ See the example rem start and end file (remStartAndEndExample.csv) for more info
 Included in the helperFiles folder is an example of a standard score file (Subject1.xlsx) and an example matlab file that can take score files like these and convert them to a remStartAndEnd.csv file as above. This file is heavly commented, so please read.
 If you would like to make your own parsing functions, this file is a good place to start.
  
-###Output Data
+### Output Data
 Output (in the same file as the EDF's) will be a simple .csv file containing each detectors measurement of REM density as well as a .mat file
 The .mat file has remDensity measurements, labels (NoREM, 1REM, 2REM for each 1 second window) and REM locations in samples (when applicable).
  
-###Training the detector
+### Training the detector
 If the you believe your REM are significantly different from the REMs in Yetton Et Al then retraining of algorithms is desirable. It is advised to have at least as much data as Yetton Et Al used for training. See Yetton et al for details.
 Based on how popular this algorithm is, we will provide details of how to retrain the algorithm. Please email bdyetton(AT)gmail(DOT)com for more information.
  
-###Validation
+### Validation
 Some of the algorithms here may produce better or worse results on your dataset. Your definition of a REM may be different from Yetton Et Al's, or your PSG channel placement may be slightly different. You can test the validity of this algorithm by marking REM's in your data and then comparing to detected REM's OR by calculating various descriptive statistics of REM and comparing to those in Yetton Et Al.
 Code to compare can be found in calREMValidity.m (which gives reliability statistics) and calREMStats.m (which plots distributions of REM statistics for comparison to Yetton Et Al). #TODO
