@@ -1,6 +1,6 @@
-function runDetector(detectors2Run)
-%% detectors2Run should be a subset of the following strings:
-if ~exist('detectors2Run','var')
+function runDetector(detectors2Run,locChannel,rocChannel)
+%% detectors2Run should be a subset of the following strings, or an empty array []:
+if ~exist('detectors2Run','var') || isempty(detectors2Run)
     detectors2Run = {
         'YettonEtAl_MachineLearning',...
         'SmithEtAl',...
@@ -11,6 +11,15 @@ if ~exist('detectors2Run','var')
         'YettonEtAl_Threshold'        
         };
 end
+
+if ~exist('locChannel','var') 
+    locChannel=1;
+end
+
+if ~exist('rocChannel','var') 
+    rocChannel=2;
+end
+
 disp('Converting EDF to mat files')
 [edfs,outputLocation] = edf2matMultiSelect();
 edfs = edfs(~cellfun(@isempty, edfs));
@@ -51,7 +60,7 @@ for i_edf=1:length(edfs)
         rem.fileNames{i,1} = [name sprintf('_period%i',remperiod)];
         fprintf('\n%s period %i of %i\n',name,remperiod,length(startTimes)); 
         fprintf('\tLoading Data\n')
-        parsedData = importAndParseData(edfs{i_edf} ,startTimes(remperiod),endTimes(remperiod));
+        parsedData = importAndParseData(edfs{i_edf},locChannel,rocChannel,startTimes(remperiod),endTimes(remperiod));
         for currentDetector = 1:length(detectors2Run);
             fprintf('\tRunning %s (%i of %i)\n',detectors2Run{currentDetector},currentDetector,length(detectors2Run))
             if strcmp(detectors2Run{currentDetector},'YettonEtAl_MachineLearning')               

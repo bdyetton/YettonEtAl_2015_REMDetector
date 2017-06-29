@@ -1,4 +1,4 @@
-function dataSet = importAndParseData(psgFileToLoad,startREM,endREM)
+function dataSet = importAndParseData(psgFileToLoad,locChannel,rocChannel,startREM,endREM)
 settings.SAMPLE_RATE = 256; %Sample Rate
 settings.SAMPLING_MULTIPLIER = 200; %x2 times 100 for some reason from scoring programs output
 settings.LOW_FILTER_CUTOFF_FREQ = 5;
@@ -20,8 +20,22 @@ end
 if ~exist('endREM','var') || endREM == 0
     endREM = length(psgData.record); 
 end
-psgTemp1L = passFilter(psgData.record(1,startREM:endREM),settings.SAMPLE_RATE,settings.LOW_FILTER_CUTOFF_FREQ,'low',settings.FILTER_ATENUATION); %20Hz cutoff filter
-psgTemp1R = passFilter(psgData.record(2,startREM:endREM),settings.SAMPLE_RATE,settings.LOW_FILTER_CUTOFF_FREQ,'low',settings.FILTER_ATENUATION);
+
+
+if isstr(locChannel) 
+    locChannelNum = find(strcmp(locChannel,psgData.hdr.label));
+else
+    locChannelNum = locChannel;
+end
+
+if isstr(rocChannel) 
+    rocChannelNum = find(strcmp(rocChannel,psgData.hdr.label));
+else
+    rocChannelNum = rocChannel;
+end
+
+psgTemp1L = passFilter(psgData.record(locChannelNum,startREM:endREM),settings.SAMPLE_RATE,settings.LOW_FILTER_CUTOFF_FREQ,'low',settings.FILTER_ATENUATION); %20Hz cutoff filter
+psgTemp1R = passFilter(psgData.record(rocChannelNum,startREM:endREM),settings.SAMPLE_RATE,settings.LOW_FILTER_CUTOFF_FREQ,'low',settings.FILTER_ATENUATION);
 psgTemp2L = passFilter(psgTemp1L,settings.SAMPLE_RATE,settings.HIGH_FILTER_CUTOFF_FREQ,'high',settings.FILTER_ATENUATION); %0.5Hz cutoff highpass filter
 psgTemp2R = passFilter(psgTemp1R,settings.SAMPLE_RATE,settings.HIGH_FILTER_CUTOFF_FREQ,'high',settings.FILTER_ATENUATION);
 psgChannelDataL = psgTemp2L;
@@ -54,7 +68,7 @@ end
 
 %% Tidy and printout
 % save important vars
-dataSet.rawTimeData = [psgData.record(1,startREM:endREM) ; psgData.record(2,startREM:endREM)];
+dataSet.rawTimeData = [psgData.record(locChannelNum,startREM:endREM) ; psgData.record(rocChannelNum,startREM:endREM)];
 dataSet.timeData = psgWindowData;
 dataSet.freqData = psgWindowFreqData;
 dataSet.winIndexData = featureWindowsIndex;
