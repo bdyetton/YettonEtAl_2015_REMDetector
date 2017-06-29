@@ -28,11 +28,13 @@ The following methods from previous liturature were implmented:
  
 1. Download this file through Git or use the download as zip button (on GitHub), or OSF files panel (on OSF)
 2. Open MATLAB and navigate to the unzipped detector folder
-3. Your EEG data must be in edf format, and sampled at 256Hz, with channel 1 and 2 as LOC and ROC respectively (referenced to contralateral mastoids). Plans are to generalize the detector to other sample rates, but for now, please down-sample if need be.
-4. To run all detectors (except the McPartland detector - performance is too low) enter 'runDetector' in the command line.
+3. Your EEG data must be in edf format, and sampled at 256Hz. By default channel 1 and 2 are assumed to be LOC and ROC respectively (referenced to contralateral mastoids). However, you may enter the label or channel number of LOC and ROC, see below. Plans are to generalize the detector to other sample rates, but for now, please down-sample if need be.
+4. To run all detectors (except the McPartland detector - performance is too low) enter 'runDetector' in the command line. If you would like to run all detectors, but specify loc and roc, then use ```[]``` as the first input
 If you would like to run each detector individually, then enter a cell array of detector names (see detector names above) e.g. to run Yetton et al's Machine Learning and Thresholding algorithms:
 ```matlab 
-runDetector({'YettonEtAl_MachineLearning','YettonEtAl_Thresholding'})
+runDetector({'YettonEtAl_MachineLearning','YettonEtAl_Thresholding'}) #Running 2 yetton et al algos, with loc and roc as channel 1 and 2
+runDetector({'YettonEtAl_MachineLearning','YettonEtAl_Thresholding'},2,3) #Running 2 yetton et al algos, with loc and roc as channel 2 and 3
+runDetector([],'LOC','ROC') #Running 2 yetton et al algos, with loc/roc channels specified by the labels "LOC" and "ROC"
 ```
  
 5. A dialog will appear, please select all your EEG files (in .edf) format, they will then be converted to .mat files for further processing. Note that if there is a .mat file of the same name as the .edf file in the chosen directory, then that .mat file will be used instead and no conversion will take place.
