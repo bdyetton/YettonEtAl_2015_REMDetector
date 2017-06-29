@@ -34,7 +34,7 @@ If you would like to run each detector individually, then enter a cell array of 
 ```matlab 
 runDetector({'YettonEtAl_MachineLearning','YettonEtAl_Thresholding'}) %Running 2 yetton et al algos, with loc and roc as channel 1 and 2
 runDetector({'YettonEtAl_MachineLearning','YettonEtAl_Thresholding'},2,3) %Running 2 yetton et al algos, with loc and roc as channel 2 and 3
-runDetector([],'LOC','ROC')  %Running 2 yetton et al algos, with loc/roc channels specified by the labels "LOC" and "ROC"
+runDetector([],'LOC','ROC')  %Running all 8 algos, with loc/roc channels specified by the labels "LOC" and "ROC"
 ```
  
 5. A dialog will appear, please select all your EEG files (in .edf) format, they will then be converted to .mat files for further processing. Note that if there is a .mat file of the same name as the .edf file in the chosen directory, then that .mat file will be used instead and no conversion will take place.
