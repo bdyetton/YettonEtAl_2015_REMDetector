@@ -18,6 +18,10 @@ else
         input_EEG=fullfile(path_EEG,Source);
         names{1}=strrep(Source,'.edf','');
         [hdr, record] = edfread(input_EEG);
+        if mean(mean(record,2)) < 0
+            record = record*1000;
+            warning('Data apears to be recorded in Volts, but should be in milliVolts. Converting V->mV. This warning will only appear once.')
+        end
         save([path_EEG '/' names{1}],'record','hdr')
     end
     fileNames{1} = [path_EEG names{1} '.mat'];

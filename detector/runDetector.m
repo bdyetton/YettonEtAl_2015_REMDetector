@@ -31,8 +31,9 @@ if ~fileName
 else
     remStartAndEnd = readtable([filePath fileName]);
 end
-labels = cell(length(detectors2Run),length(edfs));
-locs = cell(length(detectors2Run),length(edfs));
+windowLabels = cell(length(detectors2Run),length(edfs));
+locsInSamples = cell(length(detectors2Run),length(edfs));
+windowLocationsInSamples = cell(length(detectors2Run),length(edfs));
 i = 1;
 for i_edf=1:length(edfs)
     fprintf('Parsing file data ')
@@ -68,19 +69,21 @@ for i_edf=1:length(edfs)
                 featureData = extractFeatures(parsedData);
                 disp('         YettonEtAl_MachineLearning 2 of 2: Classifing data')
                 classifiedData = classifyREM(featureData);
-                labels{currentDetector,i} = classifiedData;
+                windowLabels{currentDetector,i} = classifiedData;
+                windowLocationsInSamples{currentDetector,i} = parsedData.winIndexData;
             else
                 detector = str2func(detectors2Run{currentDetector});
-                locs{currentDetector,i} = detector(parsedData.rawTimeData);
-                labels{currentDetector,i} = windowize(locs{currentDetector,i},parsedData.winIndexData); 
+                locsInSamples{currentDetector,i} = detector(parsedData.rawTimeData);
+                windowLabels{currentDetector,i} = windowize(locsInSamples{currentDetector,i},parsedData.winIndexData);
+                windowLocationsInSamples{currentDetector,i} = parsedData.winIndexData;
             end      
-            rem.density(i,currentDetector) = remDensity(labels{currentDetector,i}); 
+            rem.density(i,currentDetector) = remDensity(windowLabels{currentDetector,i}); 
         end
         i = i+1;
     end
     remTable = struct2table(rem);
     %remTable.Properties.VariableNames = ['fileName' detectors2Run'];
-    save([outputFileName '.mat'],'remTable','labels');
+    save([outputFileName '.mat'],'remTable','windowLabels','windowLocationsInSamples','locsInSamples');
     writetable(remTable,[outputFileName '.csv']);
 end
 end
