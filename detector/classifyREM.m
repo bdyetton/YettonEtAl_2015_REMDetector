@@ -4,6 +4,6 @@ function labels = classifyREM(completeSet)
     featuresToUse = genFeaturesToTest(completeSet.featureNames);
     data2classify = completeSet.extractedFeatures(logical(featuresToUse),:);
     warning('off','all');
-    [result,confusion,labels]=Decoding([data2classify' zeros(size(data2classify',1),1)],classes,ECOC,'ADA','classifiers','LAP');
+    [result,confusion,labels]=Decoding(data2classify,classes,ECOC,'ADA','classifiers','LAP');
     warning('on','all');
 end
