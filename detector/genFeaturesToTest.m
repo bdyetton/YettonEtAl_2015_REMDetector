@@ -1,6 +1,7 @@
-function featureMatrix = genFeaturesToTest(featureTable,featureNames)
-    featureMatrix = zeros(size(featureNames,2),0);
-    for col = 1:size(featureTable,2)
-        featureMatrix = [featureMatrix ismember(featureNames,featureTable.(col))];
-    end
+function featureMatrix = genFeaturesToTest(featureNames)
+    featuresToExtract = {'XCOR','WAV_C','WIDTH_C','AMP_L','WIDTH_L','WAV_L','RISE_L','FALL_L','LVAR_L','NLNRG_L','TKURT_L', ...
+                         'AMP_R','WIDTH_R','WAV_R','RISE_R','COAST_R','NLNRG_R','TSKEW_R','TKURT_R','SSKEW_L','SKURT_L', ...
+                         'SENTR_L','DTW_L','DTW_C','DSI_L','FSI_L','BBDI_L','DSI_R','FSI_R','BBDI_R','DSI_C','FSI_C',...
+                         'BBDI_C','RISE_C','FALL_C'}';
+    featureMatrix = ismember(featureNames,featuresToExtract);
 end

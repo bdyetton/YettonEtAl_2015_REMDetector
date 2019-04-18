@@ -1,14 +1,16 @@
-# Automatic REM detector
-### v0.1
+﻿# Automatic REM detector
+### v0.2
 This repository contains the MATLAB code for the Automatic REM Detector (For LOC and ROC) developed by Yetton et al.
 DOI: 10.1016/j.jneumeth.2015.11.015
+
+A Python wrapper around the matlab code is also included. Matlab 2017b (9.3.0.713579) runtime is required. See README in python folder.
  
 It is suggested to read the publication before beginning, specifically sections 2.1 and 4.0 to understand data setup and limitations before using these algorithms. 
-Please use the GitHub page for all feature suggestions, comments and bug reporting. This is pre-release code and to be used at your own risk. It’s a good idea to validate this software on your own data before using it blindly. See the validation section below.
+Please use the GitHub page for all feature suggestions, comments and bug reporting. This is beta code and to be used at your own risk. It’s a good idea to validate this software on your own data before using it blindly. See the validation section below.
  
 ## Contents
-* Code to run algorithms
-* Code to generate REM statistics (#TODO)
+* Matlab Code to run algorithms
+* Python Code to run algorihtms (uses the runDetectorCommandLine interface)
  
 #### Algorithms:
 Yetton Et Al:  
@@ -35,6 +37,19 @@ If you would like to run each detector individually, then enter a cell array of 
 runDetector({'YettonEtAl_MachineLearning','YettonEtAl_Thresholding'}) %Running 2 yetton et al algos, with loc and roc as channel 1 and 2
 runDetector({'YettonEtAl_MachineLearning','YettonEtAl_Thresholding'},2,3) %Running 2 yetton et al algos, with loc and roc as channel 2 and 3
 runDetector([],'LOC','ROC')  %Running all 8 algos, with loc/roc channels specified by the labels "LOC" and "ROC"
+```
+A simpler command line only version is supplied also:
+```matlab
+runDetectorCommandLine(EDF_FILE_PATH, REM_START_STOP_FILE*, SINGLE_ALGORITHM,'LOC','ROC') %Running single algo, with loc and roc as channel as edf channel names.
+
+```
+*REM_START_STOP_FILE can also be an X by 2 array where the first col is REM bout start times, and the second col is end times. This is also true for the python interface.
+
+For python:
+```python
+import yetton_rem_detector
+rem_detector = yetton_rem_detector.initialize()
+rem_detector.runDetectorCommandLine(AS ABOVE)
 ```
  
 5. A dialog will appear, please select all your EEG files (in .edf) format, they will then be converted to .mat files for further processing. Note that if there is a .mat file of the same name as the .edf file in the chosen directory, then that .mat file will be used instead and no conversion will take place.
