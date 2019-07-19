@@ -21,13 +21,15 @@ if ~exist('endREM','var') || endREM == 0
 end
 
 
-if isstr(locChannel) 
+if isstr(locChannel)
+    locChannel = regexprep(locChannel,'\W','');
     locChannelNum = find(strcmp(locChannel,edfData.hdr.label));
 else
     locChannelNum = locChannel;
 end
 
-if isstr(rocChannel) 
+if isstr(rocChannel)
+    rocChannel = regexprep(rocChannel,'\W','');
     rocChannelNum = find(strcmp(rocChannel,edfData.hdr.label));
 else
     rocChannelNum = rocChannel;

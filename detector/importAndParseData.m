@@ -22,14 +22,16 @@ if ~exist('endREM','var') || endREM == 0
 end
 
 
-if isstr(locChannel) 
-    locChannelNum = find(strcmp(locChannel,psgData.hdr.label));
+if isstr(locChannel)
+    locChannel = regexprep(locChannel,'\W',''); %edf read replaces some chars...
+    locChannelNum = find(strcmp(locChannel,edfData.hdr.label));
 else
     locChannelNum = locChannel;
 end
 
-if isstr(rocChannel) 
-    rocChannelNum = find(strcmp(rocChannel,psgData.hdr.label));
+if isstr(rocChannel)
+    rocChannel = regexprep(rocChannel,'\W','');
+    rocChannelNum = find(strcmp(rocChannel,edfData.hdr.label));
 else
     rocChannelNum = rocChannel;
 end

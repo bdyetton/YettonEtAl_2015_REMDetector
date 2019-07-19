@@ -15,9 +15,14 @@ end
 [hdr, record] = edfread(edfFile);
 edf.hdr = hdr;
 edf.record = record;
+if mean(mean(record,2)) < 0.001
+    record = record*1000000;
+    warning('Data apears to be recorded in Volts, but should be in microVolts. Converting V->uV. This warning will only appear once.')
+end
+
 if mean(mean(record,2)) < 0
     record = record*1000;
-    warning('Data apears to be recorded in Volts, but should be in milliVolts. Converting V->mV. This warning will only appear once.')
+    warning('Data apears to be recorded in milliVolts, but should be in microVolts. Converting mV->uV. This warning will only appear once.')
 end
 
 if isstr(remStartAndEnd)
@@ -25,8 +30,8 @@ if isstr(remStartAndEnd)
     startTimes = remStartAndEnd.StartREM;
     endTimes = remStartAndEnd.EndREM;
 else
-    startTimes = remStartAndEnd(:,0);
-    endTimes = remStartAndEnd(:,1);
+    startTimes = cell2mat(remStartAndEnd{1});
+    endTimes = cell2mat(remStartAndEnd{2});
 end
 n_remperiods = length(startTimes);
 %Output containers:
@@ -57,10 +62,10 @@ for remperiod = 1:n_remperiods
     else
         detector = str2func(detector2Run);
         locsInSamples = detector(parsedData.rawTimeData);
-        locsInSamplesCont{remperiod} = locsInSamples;
+        locsInSamplesCont{remperiod} = locsInSamples+startTimes(remperiod);
         numRemInWindowCont{remperiod} = windowize(locsInSamples,parsedData.winIndexData);
-        windowStartsInSecondsCont{remperiod} = cellfun(@(x) x(1)-1, parsedData.winIndexData)/256;
-        windowEndsInSecondsCont{remperiod} = cellfun(@(x) x(end)-1, parsedData.winIndexData)/256;
+        windowStartsInSecondsCont{remperiod} = (cellfun(@(x) x(1)-1, parsedData.winIndexData)+startTimes(remperiod))/256;
+        windowEndsInSecondsCont{remperiod} = (cellfun(@(x) x(end)-1, parsedData.winIndexData)+startTimes(remperiod))/256;
     end      
 end
 locsInSeconds = [locsInSamplesCont{:}]/256;
