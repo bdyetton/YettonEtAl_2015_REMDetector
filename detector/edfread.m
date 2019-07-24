@@ -193,7 +193,6 @@ end
 hdr.label = hdr.label(targetSignals);
 hdr.label = regexprep(hdr.label,'\W','');
 hdr.units = regexprep(hdr.units,'\W','');
-disp('Step 1 of 2: Reading requested records. (This may take a few minutes.)...');
 if nargout > 1 || assignToVariables
     % Scale data (linear scaling)
     scalefac = (hdr.physicalMax - hdr.physicalMin)./(hdr.digitalMax - hdr.digitalMin);
@@ -224,8 +223,6 @@ if nargout > 1 || assignToVariables
     record = zeros(numel(hdr.label), hdr.samples(1)*hdr.records);
     % NOTE: 5/6/13 Modified for loop below to change instances of hdr.samples to
     % hdr.samples(ii). I think this underscored a problem with the reader.
-    
-    disp('Step 2 of 2: Parsing data...');
     recnum = 1;
     for ii = 1:hdr.ns
         if ismember(ii,targetSignals)
